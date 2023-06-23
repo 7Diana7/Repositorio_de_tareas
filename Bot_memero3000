@@ -1,20 +1,33 @@
 import discord
+import requests
 from discord.ext import commands
 import os
-bot = commands.Bot(command_prefix='!')
+import random
 
-print(os.listdir('memes'))
+# La variable intents almacena los privilegios del bot
+intents = discord.Intents.default()
+# Activar el privilegio de lectura de mensajes
+intents.message_content = True
+# Crear un bot en la variable cliente y transferirle los privilegios
+bot = commands.Bot(command_prefix='!', intents=intents)
+
+print(len(os.listdir('Memes')))
 
 @bot.command()
 async def mem(ctx):
     # ¡Y así es como se puede sustituir el nombre del fichero desde una variable!
-    with open(f'memes/{img_name}', 'rb') as f:
+        image_files = os.listdir('Memes')  # Aquí se pone el nombre de la carpeta donde están los memes
+        random_file = random.choice(image_files)
+        # Ruta completa del archivo seleccionado
+        file_path = os.path.join('Memes', random_file)
+        # Abrir el archivo seleccionado
+        with open(file_path, 'rb') as f:
             picture = discord.File(f)
-    # A continuación, podemos enviar este archivo como parámetro.
-    await ctx.send(file=picture)
+        # Enviar el archivo al usuario
+        await ctx.channel.send(file=picture)
 
-def get_duck_image_url():    
-    url = 'https://random-d.uk/api/random'
+def get_duck_image_url(): 
+    url = 'https://pokeapi.co/api/v2/pokemon/'   
     res = requests.get(url)
     data = res.json()
     return data['url']
@@ -23,9 +36,8 @@ def get_duck_image_url():
 @bot.command('duck')
 async def duck(ctx):
     '''Una vez que llamamos al comando duck, 
-    el programa llama a la función get_duck_image_url'''
+    el programa llama a la función get_duck_image_url''' 
     image_url = get_duck_image_url()
     await ctx.send(image_url)
-    bot.run('Añadir token')
 
 bot.run('añadir token')
