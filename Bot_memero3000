@@ -30,14 +30,23 @@ def get_duck_image_url():
     url = 'https://pokeapi.co/api/v2/pokemon/'   
     res = requests.get(url)
     data = res.json()
-    return data['url']
-
+    if 'url' in data:
+        return data['url']
+    else:
+        return None
 
 @bot.command('duck')
 async def duck(ctx):
-    '''Una vez que llamamos al comando duck, 
-    el programa llama a la función get_duck_image_url''' 
     image_url = get_duck_image_url()
-    await ctx.send(image_url)
+    if image_url is not None:
+        response = requests.get(image_url)
+        if response.status_code == 200:
+            image_data = response.content
+            file = discord.File(image_data, filename='duck_image.png')
+            await ctx.send(file=file)
+        else:
+            await ctx.send("No se pudo obtener la imagen.")
+    else:
+        await ctx.send("No se encontró la URL de imagen.")
 
 bot.run('añadir token')
