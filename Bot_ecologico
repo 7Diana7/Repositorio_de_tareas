@@ -1,0 +1,39 @@
+import discord, random
+
+from discord.ext import commands
+
+DicConta = {
+
+    "Utilice bombillas y electrodomésticos de bajo consumo .",
+    "Participe en los programas de conservación de energía de su empresa de servicios públicos local",
+    "Usar el transporte público, andar en bicicleta y caminar.",
+    "Mantenga su automóvil bien afinado y mantenido . Siga las instrucciones del fabricante sobre el mantenimiento de rutina, como cambiar el aceite y los filtros, y verificar la presión de los neumáticos y la alineación de las ruedas.",
+    "Evite el ralentí excesivo de su automóvil",
+    "Conducir vehículos eléctricos híbridos eléctricos o enchufables.",
+    "Use equipo eléctrico o manual para el cuidado del césped.",
+    "Tenga cuidado de no derramar gasolina al llenar el automóvil o el equipo de jardinería y césped que funciona con gasolina..",
+    "Elija limpiadores ecológicos",
+    "Use pinturas a base de agua o sin disolventes siempre que sea posible y compre productos que digan «bajo contenido de compuestos orgánicos volátiles»",
+    "Selle los recipientes de productos de limpieza para el hogar, productos químicos y disolventes de taller y productos químicos de jardín para evitar que los compuestos orgánicos volátiles se evaporen en el aire",
+    "Compre y use motores marinos externos de baja contaminación y vehículos acuáticos personales (motores marinos externos de 4 tiempos e inyección directa de combustible de 2 tiempos).",
+    "Defender las reducciones de emisiones de las centrales eléctricas y los estándares nacionales de emisiones de vehículos más estrictos.",
+    "Ahorre energía : recuerde apagar las luces, las computadoras y los aparatos eléctricos cuando no estén en uso"
+
+}
+
+intents = discord.Intents.default()
+intents.message_content = True
+bot = commands.Bot(command_prefix='!', intents=intents)
+
+@bot.event()
+async def on_ready():
+    print(f"Hemos iniciado sesion como {bot.user}")
+
+
+@bot.command()
+async def mem(ctx):
+    random_file = random.choice(DicConta)
+
+    await ctx.send(random_file)
+
+bot.run("token")
